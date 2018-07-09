@@ -168,3 +168,7 @@ I believe in 2018 the `this.Reflect` check is more suitable for current browsers
 I also believe in 2020 the `<script type=module>` will be the best way to distinguish, but the incremental fallback through `this.Reflect` and `ES5` might still be desired in some, hopefully rare, case.
 
 These techniques should never conflict with each other, and [browsers interfering with legacy are shooting their own feet](https://developers.google.com/web/updates/2016/08/removing-document-write) (which is why I had to obfuscate `document.write`).
+
+## Universal Bundle Loader
+
+There is also another way to bring in bundlers, it's called [Universal Bundle Loader](https://github.com/WebReflection/ubl#ubl), or _ubl_ for short.
