@@ -125,12 +125,12 @@ Above snippet, placed at the very top of the page, can be used to both distingui
 
 The advantage of polluting the global scope upfront with a `LEGACY` boolean is to be able to find out, even after patching `Reflect`, if the browser needed such patch or not.
 
-### write(test, url)
+### polyfill(test, url)
 
 ```html
-<script>function write(o,O) {
+<script>function polyfill(o,O) {
   try{if(typeof o!='string'||!window[o])o()}
-  catch(o){window['docum\x65nt']['writ\x65']('<script src="'+O+'"><\x2fscript>')}
+  catch(o){document.write('<script src="'+O+'"><\x2fscript>')}
 }</script>
 ```
 
@@ -140,22 +140,21 @@ Above snippet would perform the following actions:
   * if yes, and such string is not in the global context, throw an error by executing such string.
   * if not, execute the function instead.
   * if there is an error or the global name is unknown, bring in the polyfill.
-  * use obfuscated `window['docum\x65nt']['writ\x65']` to hopefully avoid modern Chrome sniffing and deoptimizing the page anyhow
 
 ```html
 <script>
 // will bring in the polyfill if not found
-write('customElements', 'https://unpkg.com/document-register-element');
+polyfill('customElements', 'https://unpkg.com/document-register-element');
 </script>
 <script>
 // simplified EventTarget test
-write(function(){new EventTarget}, 'https://unpkg.com/event-target');
+polyfill(function(){new EventTarget}, 'https://unpkg.com/@ungap/event-target');
 </script>
 ```
 
-Please note using `document.write` must be performed inline on the page otherwise `write(...)` will destroy your document. It is also important to understand that in order to have incremental patching, each `write(...)` might need its own script a part, otherwise the next `write(...)` wont consider the potentially already fixed behavior the previous write pulled in.
+Please note using `document.write` must be performed inline on the page otherwise `polyfill(...)` will destroy your document. It is also important to understand that in order to have incremental patching, each `polyfill(...)` might need its own script a part, otherwise the next `polyfill(...)` wont consider the potentially already fixed behavior the previous write pulled in.
 
-_TL;DR_ `write(...)` here is not usable as generic JS loader and it's better used one `<script>` per time.
+_TL;DR_ `polyfill(...)` here is not usable as generic JS loader, it's better used one `<script>` per time, and it should be within the head of the document.
 
 ## To document.write or not
 
