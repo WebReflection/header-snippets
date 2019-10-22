@@ -171,3 +171,8 @@ These techniques should never conflict with each other, and [browsers interferin
 ## Universal Bundle Loader
 
 There is also another way to bring in bundlers, it's called [Universal Bundle Loader](https://github.com/WebReflection/ubl#ubl), or _ubl_ for short.
+
+## Custom Elements
+```html
+(function(w){try{w.customElements.define("built-in",document.createElement("p").constructor,{"extends":"p"})}catch(b){document.write('<script src="//unpkg.com/'+(w.customElements?"@ungap/custom-elements-builtin":"document-register-element")+'">\x3c/script>')}})(this);
+  ```
